@@ -66,7 +66,7 @@ def draw_boxes_and_label_on_image_cv2(img, class_label_map, class_boxes_map):
     """
     for c, boxes in class_boxes_map.items():
         for box in boxes:
-            assert len(boxes) == 5, 'class_boxes_map every item must be [bb_left, bb_top, bb_width, bb_height, prob]'
+            assert len(box) == 5, 'class_boxes_map every item must be [bb_left, bb_top, bb_width, bb_height, prob]'
             # checking box order is bb_left, bb_top, bb_width, bb_height
             # make sure all box should be int for OpenCV
             bb_left = int(box[0])

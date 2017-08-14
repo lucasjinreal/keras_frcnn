@@ -135,11 +135,12 @@ def predict_single_image(img_path, model_rpn, model_classifier_only, cfg, class_
     result_path = './results_images/{}.png'.format(os.path.basename(img_path).split('.')[0])
     print('result saved into ', result_path)
     cv2.imwrite(result_path, img)
-    while 1:
-        c = cv2.waitKey(0)
-        if 'q' == chr(c & 255):
-            cv2.destroyAllWindows()
-            break
+    cv2.waitKey(0)
+    # while 1:
+    #     c = cv2.waitKey(0)
+    #     if 'q' == chr(c & 255):
+    #         cv2.destroyAllWindows()
+    #         break
 
 
 def predict(args_):

@@ -7,9 +7,7 @@ import pprint
 import sys
 import time
 import numpy as np
-from optparse import OptionParser
 import pickle
-
 from keras import backend as K
 from keras.optimizers import Adam, SGD, RMSprop
 from keras.layers import Input
@@ -18,7 +16,6 @@ from keras_frcnn import config, data_generators
 from keras_frcnn import losses as losses_fn
 import keras_frcnn.roi_helpers as roi_helpers
 from keras.utils import generic_utils
-import numpy as np
 import os
 from keras_frcnn import resnet as nn
 from keras_frcnn.simple_parser import get_data
@@ -31,31 +28,32 @@ def train_kitti():
     cfg.use_horizontal_flips = True
     cfg.use_vertical_flips = True
     cfg.rot_90 = True
-
-    cfg.model_path = './model/kitti_frcnn.hdf5'
     cfg.num_rois = 32
-
     cfg.base_net_weights = os.path.join('./model/', nn.get_weight_path())
 
-    # TODO: from here to load different data
-    all_images, classes_count, class_mapping = get_data(cfg.kitti_simple_label_file)
+    # TODO: the only file should to be change for other data to train
+    cfg.model_path = './model/kitti_frcnn_last.hdf5'
+    cfg.simple_label_file = 'kitti_simple_label.txt'
+
+    all_images, classes_count, class_mapping = get_data(cfg.simple_label_file)
 
     if 'bg' not in classes_count:
         classes_count['bg'] = 0
         class_mapping['bg'] = len(class_mapping)
 
     cfg.class_mapping = class_mapping
+    with open(cfg.config_save_file, 'wb') as config_f:
+        pickle.dump(cfg, config_f)
+        print('Config has been written to {}, and can be loaded when testing to ensure correct results'.format(
+            cfg.config_save_file))
 
     inv_map = {v: k for k, v in class_mapping.items()}
 
     print('Training images per class:')
     pprint.pprint(classes_count)
     print('Num classes (including bg) = {}'.format(len(classes_count)))
-
     random.shuffle(all_images)
-
     num_imgs = len(all_images)
-
     train_imgs = [s for s in all_images if s['imageset'] == 'trainval']
     val_imgs = [s for s in all_images if s['imageset'] == 'test']
 
@@ -101,7 +99,8 @@ def train_kitti():
 
     optimizer = Adam(lr=1e-5)
     optimizer_classifier = Adam(lr=1e-5)
-    model_rpn.compile(optimizer=optimizer, loss=[losses_fn.rpn_loss_cls(num_anchors), losses_fn.rpn_loss_regr(num_anchors)])
+    model_rpn.compile(optimizer=optimizer,
+                      loss=[losses_fn.rpn_loss_cls(num_anchors), losses_fn.rpn_loss_regr(num_anchors)])
     model_classifier.compile(optimizer=optimizer_classifier,
                              loss=[losses_fn.class_loss_cls, losses_fn.class_loss_regr(len(classes_count) - 1)],
                              metrics={'dense_class_{}'.format(len(classes_count)): 'accuracy'})
@@ -147,11 +146,11 @@ def train_kitti():
 
                 P_rpn = model_rpn.predict_on_batch(X)
 
-                R = roi_helpers.rpn_to_roi(P_rpn[0], P_rpn[1], cfg, K.image_dim_ordering(), use_regr=True,
-                                           overlap_thresh=0.7,
-                                           max_boxes=300)
+                result = roi_helpers.rpn_to_roi(P_rpn[0], P_rpn[1], cfg, K.image_dim_ordering(), use_regr=True,
+                                                overlap_thresh=0.7,
+                                                max_boxes=300)
                 # note: calc_iou converts from (x1,y1,x2,y2) to (x,y,w,h) format
-                X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, cfg, class_mapping)
+                X2, Y1, Y2, IouS = roi_helpers.calc_iou(result, img_data, cfg, class_mapping)
 
                 if X2 is None:
                     rpn_accuracy_rpn_monitor.append(0)
@@ -250,8 +249,8 @@ def train_kitti():
                 # save model
                 model_all.save_weights(cfg.model_path)
                 continue
-
     print('Training complete, exiting.')
+
 
 if __name__ == '__main__':
     train_kitti()

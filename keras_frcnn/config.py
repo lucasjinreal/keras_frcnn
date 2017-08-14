@@ -60,3 +60,9 @@ class Config:
         self.num_epochs = 3000
 
         self.kitti_simple_label_file = 'kitti_simple_label.txt'
+
+        # TODO: this field is set to simple_label txt, which in very simple format like:
+        # TODO: /path/image_2/000000.png,712.40,143.00,810.73,307.92,Pedestrian, see kitti_simple_label.txt for detail
+        self.simple_label_file = 'simple_label.txt'
+
+        self.config_save_file = 'config.pickle'

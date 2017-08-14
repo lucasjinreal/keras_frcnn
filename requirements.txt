@@ -1,5 +1,5 @@
 h5py
 Keras==2.0.6
 numpy
-opencv-python
 sklearn
+

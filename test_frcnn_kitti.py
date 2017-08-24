@@ -75,7 +75,7 @@ def predict_single_image(img_path, model_rpn, model_classifier_only, cfg, class_
     # get the feature maps and output from the RPN
     [Y1, Y2, F] = model_rpn.predict(X)
 
-    # this is result contains all boxes, which is [x1, y1, x2, y2, prob]
+    # this is result contains all boxes, which is [x1, y1, x2, y2]
     result = roi_helpers.rpn_to_roi(Y1, Y2, cfg, K.image_dim_ordering(), overlap_thresh=0.7)
 
     # convert from (x1,y1,x2,y2) to (x,y,w,h)
@@ -136,16 +136,10 @@ def predict_single_image(img_path, model_rpn, model_classifier_only, cfg, class_
     print('result saved into ', result_path)
     cv2.imwrite(result_path, img)
     cv2.waitKey(0)
-    # while 1:
-    #     c = cv2.waitKey(0)
-    #     if 'q' == chr(c & 255):
-    #         cv2.destroyAllWindows()
-    #         break
 
 
 def predict(args_):
     path = args_.path
-    # load from saved config.pkl
     with open('config.pickle', 'rb') as f_in:
         cfg = pickle.load(f_in)
     cfg.use_horizontal_flips = False

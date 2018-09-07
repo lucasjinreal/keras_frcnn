@@ -84,7 +84,6 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 	num_anchors = len(anchor_sizes) * len(anchor_ratios)	
 
 	# calculate the output map size based on the network architecture
-
 	(output_width, output_height) = img_length_calc_function(resized_width, resized_height)
 
 	n_anchratios = len(anchor_ratios)
@@ -103,6 +102,7 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 	best_dx_for_bbox = np.zeros((num_bboxes, 4)).astype(np.float32)
 
 	# get the GT box coordinates, and resize to account for image resizing
+	# convert the label bbox to resized image, just change the ratio according to resize/original_size
 	gta = np.zeros((num_bboxes, 4))
 	for bbox_num, bbox in enumerate(img_data['bboxes']):
 		# get the GT box coordinates, and resize to account for image resizing
@@ -112,12 +112,14 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 		gta[bbox_num, 3] = bbox['y2'] * (resized_height / float(height))
 	
 	# rpn ground truth
-
+	# iterate anchor size and ratio, get all possiable RPNs
 	for anchor_size_idx in range(len(anchor_sizes)):
 		for anchor_ratio_idx in range(n_anchratios):
 			anchor_x = anchor_sizes[anchor_size_idx] * anchor_ratios[anchor_ratio_idx][0]
 			anchor_y = anchor_sizes[anchor_size_idx] * anchor_ratios[anchor_ratio_idx][1]	
 			
+			# TODO: Important part, we got final feature map output_w and output_h
+			# then we reflect back every anchor positions in the original image
 			for ix in range(output_width):					
 				# x-coordinates of the current anchor box	
 				x1_anc = downscale * (ix + 0.5) - anchor_x / 2
@@ -185,6 +187,10 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 									bbox_type = 'neutral'
 
 					# turn on or off outputs depending on IOUs
+					# box type has neg,pos, neutral
+					# neg: the box is backgronud
+					# pos: the box has RPN
+					# neutral: normal box with a RPN
 					if bbox_type == 'neg':
 						y_is_box_valid[jy, ix, anchor_ratio_idx + n_anchratios * anchor_size_idx] = 1
 						y_rpn_overlap[jy, ix, anchor_ratio_idx + n_anchratios * anchor_size_idx] = 0
@@ -198,7 +204,6 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 						y_rpn_regr[jy, ix, start:start+4] = best_regr
 
 	# we ensure that every bbox has at least one positive RPN region
-
 	for idx in range(num_anchors_for_bbox.shape[0]):
 		if num_anchors_for_bbox[idx] == 0:
 			# no box with an IOU greater than zero ...

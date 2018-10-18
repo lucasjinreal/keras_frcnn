@@ -2,6 +2,10 @@
 
 > this is a very userful implementation of faster-rcnn based on tensorflow and keras, the model is very clear and just saved in .h5 file, out of box to use, and easy to train on other data set with full support. if you have any question, feel free to ask me via wechat: jintianiloveu
 
+## Update
+
+This code only support to keras 2.0.3, the newest version will cause some errors. If you can fix it, feel free to send me a PR.
+
 ## Requirements
 Basically, this code supports both python2.7 and python3.5, the following package should installed:
 * tensorflow

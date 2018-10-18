@@ -190,7 +190,12 @@ def nn_base(input_tensor=None, trainable=False):
 
     x = ZeroPadding2D((3, 3))(img_input)
 
+    # print('++ zero padding: ', x)
+
     x = Convolution2D(64, (7, 7), strides=(2, 2), name='conv1', trainable=trainable)(x)
+
+    # print('+ conv 2d: ', x)
+    print('NOTE: this code only support to keras 2.0.3, newest version this line will got errors. see trace back.')
     x = FixedBatchNormalization(axis=bn_axis, name='bn_conv1')(x)
     x = Activation('relu')(x)
     x = MaxPooling2D((3, 3), strides=(2, 2))(x)

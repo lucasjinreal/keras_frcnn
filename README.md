@@ -1,5 +1,13 @@
 # Keras Faster-RCNN
 
+**[UPDATE]**
+
+This work has been publiced on **StrangeAI - An AI Algorithm Hub**,  You can found this work at [Here](http://ai.loliloli.pro/) (You may found more interesting work on this website, it's a very good resource to learn AI, StrangeAi authors maintainered all applications in AI).
+
+you can also subscribe their official wechat account:
+
+![](https://i.loli.net/2018/09/03/5b8c9e1fabfc3.png)
+
 > this is a very userful implementation of faster-rcnn based on tensorflow and keras, the model is very clear and just saved in .h5 file, out of box to use, and easy to train on other data set with full support. if you have any question, feel free to ask me via wechat: jintianiloveu
 
 ## Update

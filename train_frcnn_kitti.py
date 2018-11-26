@@ -90,8 +90,8 @@ def train_kitti():
 
     try:
         print('loading weights from {}'.format(cfg.base_net_weights))
-        model_rpn.load_weights(cfg.model_path, by_name=True)
-        model_classifier.load_weights(cfg.model_path, by_name=True)
+        model_rpn.load_weights(cfg.base_net_weights, by_name=True)
+        model_classifier.load_weights(cfg.base_net_weights, by_name=True)
     except Exception as e:
         print(e)
         print('Could not load pretrained model weights. Weights can be found in the keras application folder '

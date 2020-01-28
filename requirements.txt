@@ -101,7 +101,7 @@ SphinxBase==0.8
 stevedore==1.24.0
 subprocess32==3.2.7
 svgwrite==1.1.11
-tensorflow==1.1.0
+tensorflow==1.15.2
 tensorflow-gpu==1.1.0
 terminado==0.6
 testpath==0.3.1

@@ -76,7 +76,7 @@ public==0.0.0
 pydot==1.2.3
 pygame==1.9.3
 pyglet==1.2.4
-Pygments==2.2.0
+Pygments==2.7.4
 PyOpenGL==3.1.0
 pyparsing==2.2.0
 python-dateutil==2.6.0

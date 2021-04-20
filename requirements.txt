@@ -1,7 +1,7 @@
 appnope==0.1.0
 atari-py==0.1.1
 attrs==17.2.0
-autobahn==17.7.1
+autobahn==20.12.3
 Automat==0.6.0
 backports-abc==0.5
 backports.shutil-get-terminal-size==1.0.0

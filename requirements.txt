@@ -114,7 +114,7 @@ Twisted==17.5.0
 txaio==2.8.0
 ujson==1.35
 universe==0.21.3
-urllib3==1.21.1
+urllib3==1.26.5
 virtualenv==15.1.0
 virtualenv-clone==0.2.6
 virtualenvwrapper==4.7.2

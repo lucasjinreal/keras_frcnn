@@ -37,7 +37,7 @@ idna==2.5
 incremental==17.5.0
 ipaddress==1.0.18
 ipykernel==4.6.1
-ipython==5.3.0
+ipython==7.16.3
 ipython-genutils==0.2.0
 ipywidgets==6.0.0
 itsdangerous==0.24

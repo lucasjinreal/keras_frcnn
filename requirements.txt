@@ -112,7 +112,7 @@ tornado==4.5.1
 traitlets==4.3.2
 Twisted==17.5.0
 txaio==2.8.0
-ujson==1.35
+ujson==5.2.0
 universe==0.21.3
 urllib3==1.21.1
 virtualenv==15.1.0

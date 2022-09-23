@@ -70,7 +70,7 @@ Pillow==4.1.1
 PocketSphinx==0.8
 post==0.0.0
 prompt-toolkit==1.0.14
-protobuf==3.2.0
+protobuf==3.18.3
 ptyprocess==0.5.1
 public==0.0.0
 pydot==1.2.3
